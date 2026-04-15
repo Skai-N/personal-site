@@ -7,6 +7,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-console.log("NEXT CONFIG LOADED");
-
 export default nextConfig;
