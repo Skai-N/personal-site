@@ -18,6 +18,9 @@ export const metadata: Metadata = {
     description: "Skai Nzeuton's personal portfolio website.",
     type: "website",
   },
+  icons: {
+    icon: "/headshot.jpg",
+  },
 };
 
 export default function RootLayout({

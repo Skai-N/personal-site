@@ -166,9 +166,10 @@ export default function Home() {
           <Image
             src={`${basePath}/headshot.jpg`}
             alt="Headshot photo"
-            width={350}
+            width={400}
             height={350}
             className="object-contain"
+            style={{ height: "auto" }}
           />
 
           <div className="flex flex-col items-center text-center md:items-start md:text-left">
