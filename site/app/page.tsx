@@ -88,18 +88,25 @@ const PROJECTS = [
 
 const LEADERSHIP = [
   {
-    role: "[Your Role]",
-    org: "[Organization Name]",
-    period: "Mon YYYY – Present",
+    role: "Vice President",
+    org: "Cornell Data Science Project Team",
+    period: "May 2025 – Present",
     description:
-      "[Describe your leadership contributions and impact in this role]",
+      "Leading Cornell's largest data science club, spanning 9 projects across 60+ club members and 2 corporate sponsorships",
   },
   {
-    role: "[Your Role]",
-    org: "[Organization Name]",
-    period: "Mon YYYY – Mon YYYY",
+    role: "Academic Excellence Chair",
+    org: "National Society of Black Engineers",
+    period: "May 2024 – May 2025",
     description:
-      "[Describe your leadership contributions and impact in this role]",
+      "Organized 5-member committee to create workshops, improving course performance and time usage for 400+ students",
+  },
+  {
+    role: "Founder",
+    org: "Food for All NYC",
+    period: "Jun 2022 – May 2024",
+    description:
+      "Orchestrated team of 10 and managed 2 corporate partnerships, donating ~20,000 pounds of food across 2,000+ schools",
   },
 ];
 
