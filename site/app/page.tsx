@@ -67,23 +67,23 @@ const EXPERIENCE = [
 
 const PROJECTS = [
   {
-    title: "[Project Name]",
-    tech: "[React, TypeScript, …]",
-    description: "[One-liner about what this project does and why it matters]",
-    link: "#",
+    title: "GitDistributed",
+    tech: "C++, TCP Networking, Distributed Systems",
+    description: "C++ implementation of essential Git commands, featuring a distributed remote server replicated via the Primary-Backup model.",
+    link: "https://youtu.be/qhKPWgMNqMY",
   },
   {
-    title: "[Project Name]",
-    tech: "[Python, FastAPI, …]",
-    description: "[One-liner about what this project does and why it matters]",
-    link: "#",
+    title: "Quantization on Edge",
+    tech: "Python, ONNX, Machine Learning",
+    description: "Python ONNX implementation of symmetric and asymmetric post-training static and dynamic quantization techniques.",
+    link: "https://docs.google.com/presentation/d/1gnHAot5ASr7be5nIqDEKw6tbAFfQTv1nIGAL4Oloe24/edit?usp=sharing",
   },
-  {
-    title: "[Project Name]",
-    tech: "[Swift, CoreML, …]",
-    description: "[One-liner about what this project does and why it matters]",
-    link: "#",
-  },
+  // {
+  //   title: "[Project Name]",
+  //   tech: "[Swift, CoreML, …]",
+  //   description: "[One-liner about what this project does and why it matters]",
+  //   link: "#",
+  // },
 ];
 
 const LEADERSHIP = [
@@ -111,16 +111,16 @@ const LEADERSHIP = [
 ];
 
 const CONTACT_LINKS = [
-  { label: "Email", value: "you@example.com", href: "mailto:you@example.com" },
+  { label: "Email", value: "san82@cornell.edu", href: "mailto:san82@cornell.edu" },
   {
     label: "LinkedIn",
-    value: "linkedin.com/in/yourname",
-    href: "https://linkedin.com/in/yourname",
+    value: "linkedin.com/in/skainzeuton",
+    href: "https://linkedin.com/in/skainzeuton",
   },
   {
     label: "GitHub",
-    value: "github.com/yourname",
-    href: "https://github.com/yourname",
+    value: "github.com/skai-n",
+    href: "https://github.com/skai-n",
   },
 ];
 
@@ -177,15 +177,27 @@ export default function Home() {
             <h1 className="mb-4 text-4xl font-bold leading-tight tracking-tight text-foreground md:text-5xl">
               Skai Nzeuton
             </h1>
-            <p className="max-w-md text-base leading-relaxed text-muted">
-              Hey, I'm Skai!
+            <div className="max-w-md text-base leading-relaxed text-muted space-y-4">
+              <p>Hey, I'm Skai! 🤙 </p>
 
-              As a junior studying computer science and entrepreneurship at Cornell University, I'm passionate about using technology and innovation to solve complex issues!
+              <p>
+                As a junior studying computer science and entrepreneurship at Cornell
+                University, I'm passionate about using technology and innovation to solve
+                complex issues!
+              </p>
 
-              My interests include machine learning, high-performance computing, quantum computing, and social entrepreneurship. To further these interests, I started my own nonprofit called Food for All NYC, joined the National Society of Black Engineers, the Cornell Data Science project team, and serve as a mentor for LinkedIn's ASCEND program.
+              <p>
+                My interests include distributed systems, machine learning, quantum
+                computing, and social entrepreneurship. To further these interests, I
+                started my own nonprofit called Food for All NYC, joined the National
+                Society of Black Engineers, the Cornell Data Science project team, and serve
+                as a mentor for LinkedIn's ASCEND program.
+              </p>
 
-              Feel free to contact me at san82 [at] cornell [dot] edu!
-            </p>
+              <p>
+                Feel free to contact me at san82 [at] cornell [dot] edu!
+              </p>
+            </div>
           </div>
         </section>
 
@@ -256,7 +268,7 @@ export default function Home() {
               Projects
             </h2>
 
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
               {PROJECTS.map((project, i) => (
                 <a
                   key={i}
@@ -322,7 +334,7 @@ export default function Home() {
               Get in Touch
             </h2>
             <p className="mb-10 max-w-md text-sm leading-relaxed text-muted">
-              [Write a short message inviting people to reach out]
+              Feel free to contact me at san82 [at] cornell [dot] edu!
             </p>
 
             <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
