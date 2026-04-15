@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
+const repoName = "personal-site";
+
 const nextConfig: NextConfig = {
   output: "export",
+  basePath: `/${repoName}`,
+  assetPrefix: `/${repoName}/`,
+  trailingSlash: true,
   images: {
     unoptimized: true,
   },
