@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { basePath } from "@/lib/config";
 
 /* ── Data ────────────────────────────────────── */
 
@@ -163,7 +164,7 @@ export default function Home() {
         >
           {/* ── Headshot  ── */}
           <Image
-            src="/headshot.jpg"
+            src={`${basePath}/headshot.jpg`}
             alt="Headshot photo"
             width={350}
             height={350}
@@ -217,7 +218,7 @@ export default function Home() {
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md border border-border bg-surface text-xs text-muted">
                     {
                       <Image
-                        src={job.logo}
+                        src={`${basePath}${job.logo}`}
                         alt={`${job.company} logo`}
                         width={48}
                         height={48}

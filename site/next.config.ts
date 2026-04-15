@@ -2,14 +2,13 @@ import type { NextConfig } from "next";
 
 const repoName = "personal-site";
 
-const nextConfig: NextConfig = {
+const isProd = process.env.NODE_ENV === "production";
+
+const nextConfig = {
   output: "export",
-  basePath: `/${repoName}`,
-  assetPrefix: `/${repoName}/`,
-  trailingSlash: true,
-  // images: {
-  //   unoptimized: true,
-  // },
+  basePath: isProd ? `/${repoName}` : "",
+  assetPrefix: isProd ? `/${repoName}/` : "",
+  images: { unoptimized: true },
 };
 
 export default nextConfig;
