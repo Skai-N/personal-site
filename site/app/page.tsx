@@ -121,35 +121,48 @@ const PROJECTS = [
     description: "Python ONNX implementation of symmetric and asymmetric post-training static and dynamic quantization techniques.",
     link: "https://docs.google.com/presentation/d/1gnHAot5ASr7be5nIqDEKw6tbAFfQTv1nIGAL4Oloe24/edit?usp=sharing",
   },
-  // {
-  //   title: "[Project Name]",
-  //   tech: "[Swift, CoreML, …]",
-  //   description: "[One-liner about what this project does and why it matters]",
-  //   link: "#",
-  // },
 ];
 
-const LEADERSHIP = [
+type LeadershipItem = {
+  role: string;
+  org: string;
+  period: string;
+  description: ReactNode;
+};
+
+const LEADERSHIP: LeadershipItem[] = [
   {
     role: "Vice President",
     org: "Cornell Data Science Project Team",
     period: "May 2025 – Present",
-    description:
-      "Leading Cornell's largest data science club, spanning 9 projects across 60+ club members and 2 corporate sponsorships",
+    description: (
+      <>
+        Leading Cornell&apos;s largest data science club, spanning <Emphasis>9 projects</Emphasis> across{" "}
+        <Emphasis>60+ club members</Emphasis> and <Emphasis>2 corporate sponsorships</Emphasis>
+      </>
+    ),
   },
   {
     role: "Academic Excellence Chair",
     org: "National Society of Black Engineers",
     period: "May 2024 – May 2025",
-    description:
-      "Organized 5-member committee to create workshops, improving course performance and time usage for 400+ students",
+    description: (
+      <>
+        Organized <Emphasis>5-member committee</Emphasis> to create workshops, improving course performance and time usage for{" "}
+        <Emphasis>400+ students</Emphasis>
+      </>
+    ),
   },
   {
     role: "Founder",
     org: "Food for All NYC",
     period: "Jun 2022 – May 2024",
-    description:
-      "Orchestrated team of 10 and managed 2 corporate partnerships, donating ~20,000 pounds of food across 2,000+ schools",
+    description: (
+      <>
+        Orchestrated team of <Emphasis>10</Emphasis> and managed <Emphasis>2 corporate partnerships</Emphasis>, donating{" "}
+        <Emphasis>~20,000 pounds of food</Emphasis> across <Emphasis>2,000+ schools</Emphasis>
+      </>
+    ),
   },
 ];
 
@@ -162,7 +175,7 @@ const CONTACT_LINKS = [
   },
   {
     label: "LinkedIn",
-    value: "/in/skainzeuton",
+    value: "in/skainzeuton",
     href: "https://linkedin.com/in/skainzeuton",
     icon: FaLinkedin,
   },
@@ -176,6 +189,7 @@ const CONTACT_LINKS = [
 
 const RESUME_FILE = "Skai Nzeuton Resume.pdf";
 const contactIconClass = "h-5 w-5 shrink-0 text-foreground";
+const heroContactIconClass = "h-4 w-4 text-foreground";
 
 /* ── Page ────────────────────────────────────── */
 
@@ -215,14 +229,42 @@ export default function Home() {
           className="mx-auto flex w-full max-w-4xl flex-col items-center gap-12 px-6 py-24 md:flex-row md:gap-16 md:py-32"
         >
           {/* ── Headshot  ── */}
-          <Image
-            src={`${basePath}/headshot.jpg`}
-            alt="Headshot photo"
-            width={400}
-            height={350}
-            className="object-contain"
-            style={{ height: "auto" }}
-          />
+          <div className="flex flex-col items-center gap-5">
+            <Image
+              src={`${basePath}/headshot.jpg`}
+              alt="Headshot photo"
+              width={400}
+              height={350}
+              className="object-contain"
+              style={{ height: "auto" }}
+            />
+
+            <div className="flex items-center gap-3">
+              {CONTACT_LINKS.map((c) => (
+                <a
+                  key={c.label}
+                  href={c.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={c.label}
+                  title={c.label}
+                  className="contact-link flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface"
+                >
+                  <c.icon className={heroContactIconClass} aria-hidden="true" />
+                </a>
+              ))}
+
+              <a
+                href={`${basePath}/${encodeURIComponent(RESUME_FILE)}`}
+                download={RESUME_FILE}
+                aria-label="Resume"
+                title="Resume"
+                className="contact-link flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface"
+              >
+                <MdInsertDriveFile className={heroContactIconClass} aria-hidden="true" />
+              </a>
+            </div>
+          </div>
 
           <div className="flex flex-col items-center text-center md:items-start md:text-left">
             <p className="mb-2 text-sm font-medium uppercase tracking-widest text-muted">
