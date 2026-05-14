@@ -3,7 +3,7 @@
 :root {
   --background: #fafafa;
   --foreground: #1a1a1a;
-  --muted: #6b7280;
+  --muted: #4b5563;
   --border: #e5e7eb;
   --accent: #374151;
   --surface: #ffffff;
@@ -105,6 +105,12 @@ body {
   height: 2px;
   background-color: var(--border);
   margin-bottom: 2rem;
+}
+
+/* Emphasized resume content */
+.resume-emphasis {
+  font-weight: 600;
+  color: var(--foreground);
 }
 
 /* Contact link hover */

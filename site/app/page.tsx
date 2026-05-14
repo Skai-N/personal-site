@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { ReactNode } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { MdEmail, MdInsertDriveFile } from "react-icons/md";
 import { basePath } from "@/lib/config";
@@ -12,25 +13,35 @@ const NAV_LINKS = [
   { label: "Contact", href: "#contact" },
 ];
 
-const EXPERIENCE = [
+type ExperienceItem = {
+  role: string;
+  company: string;
+  period: string;
+  logo: string;
+  bullets: ReactNode[];
+};
+
+function Emphasis({ children }: { children: ReactNode }) {
+  return <strong className="resume-emphasis">{children}</strong>;
+}
+
+const EXPERIENCE: ExperienceItem[] = [
   {
-    role: "Incoming Software Engineer Intern",
+    role: "Software Engineer Intern",
     company: "Google",
-    period: "Jan 2026 – Present",
+    period: "Aug 2026 – Nov 2026",
     logo: "/logos/google.jpeg",
     bullets: [
-      "Fall 2026",
       "Google Core SignalService",
     ],
   },
   {
-    role: "Incoming Software Engineer Intern",
+    role: "Software Engineer Intern",
     company: "Meta",
-    period: "Oct 2025 – Present",
+    period: "May 2026 – Aug 2026",
     logo: "/logos/meta.jpeg",
     bullets: [
-      "Summer 2026",
-      "Network Security Analytics",
+      "Suppliers",
     ],
   },
   {
@@ -39,9 +50,19 @@ const EXPERIENCE = [
     period: "May 2025 – Aug 2025",
     logo: "/logos/microsoft.jpeg",
     bullets: [
-      "Developed C# app to automatically assess codebase regression risk across 8000+ pull requests per day in Azure",
-      "Re-architected system to remove polling and redundant API calls, decreasing compute and response time by 33%",
-      "Automated repository onboarding process with GitOps, reducing time to onboard new teams from days to minutes"
+      <>
+        Developed <Emphasis>C#</Emphasis> app to automatically assess codebase regression risk across{" "}
+        <Emphasis>8000+ pull requests per day</Emphasis> in Azure
+      </>,
+      <>
+        Re-architected system to remove polling and redundant API calls, <Emphasis>decreasing compute</Emphasis>{" "}
+        and <Emphasis>response time</Emphasis> by <Emphasis>33%</Emphasis>
+      </>,
+      <>
+        Automated repository onboarding process with <Emphasis>GitOps</Emphasis>,{" "}
+        <Emphasis>reducing time</Emphasis> to onboard new teams from{" "}
+        <Emphasis>days</Emphasis> to <Emphasis>minutes</Emphasis>
+      </>,
     ],
   },
   {
@@ -50,9 +71,18 @@ const EXPERIENCE = [
     period: "Sep 2024 – May 2025",
     logo: "/logos/linkedin.jpeg",
     bullets: [
-      "Built AI-powered full-stack React web app to practice behavioral interview skills, utilizing Next.js and Supabase",
-      "Established Llama 3.2 inference pipeline with Hugging Face to generate feedback on the quality of user answers",
-      "Refactored deployment to prefetch and serve LLM on separate Flask server, reducing inference time by over 89%"
+      <>
+        Built AI-powered full-stack <Emphasis>React</Emphasis> web app to practice behavioral interview skills, utilizing{" "}
+        <Emphasis>Next.js</Emphasis> and <Emphasis>Supabase</Emphasis>
+      </>,
+      <>
+        Established <Emphasis>Llama 3.2</Emphasis> inference pipeline with{" "}
+        <Emphasis>Hugging Face</Emphasis> to generate feedback on the quality of user answers
+      </>,
+      <>
+        Refactored deployment to prefetch and serve LLM on separate <Emphasis>Flask</Emphasis> server,{" "}
+        <Emphasis>reducing inference time</Emphasis> by over <Emphasis>89%</Emphasis>
+      </>,
     ],
   },
   {
@@ -61,9 +91,19 @@ const EXPERIENCE = [
     period: "May 2024 – Aug 2024",
     logo: "/logos/microsoft.jpeg",
     bullets: [
-      "Deployed ASP.NET web app to simplify cloud cost management for 100+ internal Azure teams with 2 teammates",
-      "Created spend dashboard using the Azure SDK, reducing the number of clicks to set and enforce budgets by 93%",
-      "Refactored backend API calls and streamlined business logic, decreasing time to load website pages by over 61%"
+      <>
+        Deployed <Emphasis>ASP.NET</Emphasis> web app to simplify cloud cost management for{" "}
+        <Emphasis>100+ internal Azure teams</Emphasis> with 2 teammates
+      </>,
+      <>
+        Created spend dashboard using the <Emphasis>Azure SDK</Emphasis>,{" "}
+        <Emphasis>reducing</Emphasis> the number of <Emphasis>clicks</Emphasis>{" "}
+        to set and enforce budgets by <Emphasis>93%</Emphasis>
+      </>,
+      <>
+        Refactored backend API calls and streamlined business logic, <Emphasis>decreasing time</Emphasis>{" "}
+        to load website pages by over <Emphasis>61%</Emphasis>
+      </>,
     ],
   },
 ];
@@ -186,30 +226,33 @@ export default function Home() {
 
           <div className="flex flex-col items-center text-center md:items-start md:text-left">
             <p className="mb-2 text-sm font-medium uppercase tracking-widest text-muted">
-              {/* [Your Tagline — e.g. Software Engineer] */}
+              {/* [Software Engineer] */}
             </p>
             <h1 className="mb-4 text-4xl font-bold leading-tight tracking-tight text-foreground md:text-5xl">
               Skai Nzeuton
             </h1>
             <div className="max-w-md text-base leading-relaxed text-muted space-y-4">
-              <p>Hey, I&apos;m Skai! 🤙 </p>
+              <p>Hey, I&apos;m <strong>Skai</strong>! 🤙 </p>
 
               <p>
-                As a junior studying computer science and entrepreneurship at Cornell
-                University, I&apos;m passionate about using technology and innovation to solve
-                complex issues!
+                As a junior studying <strong>computer science</strong> and <strong>entrepreneurship</strong> at <strong>Cornell
+                University</strong>, I&apos;m passionate about using technology and innovation to <strong>solve
+                complex issues</strong>!
               </p>
 
               <p>
-                My interests include distributed systems, machine learning, quantum
-                computing, and social entrepreneurship. To further these interests, I
-                started my own nonprofit called Food for All NYC, joined the National
-                Society of Black Engineers, the Cornell Data Science project team, and serve
-                as a mentor for LinkedIn&apos;s ASCEND program.
+                My interests include <strong>distributed systems</strong>, 
+                <strong> machine learning</strong>, and <strong>entrepreneurship</strong>.
               </p>
 
               <p>
-                Feel free to contact me at san82 [at] cornell [dot] edu!
+                To further these interests, I <strong>founded</strong> my own nonprofit called <strong>Food for All NYC</strong>, 
+                joined the <strong>Cornell Data Science</strong> project team, the <strong>National Society of Black Engineers</strong>, 
+                and serve as a mentor for <strong>LinkedIn&apos;s ASCEND</strong> program.
+              </p>
+
+              <p>
+                Feel free to <strong>contact me</strong> at <strong>san82 [at] cornell [dot] edu</strong>!
               </p>
             </div>
           </div>
@@ -261,8 +304,8 @@ export default function Home() {
                     <ul className="flex flex-col gap-1.5 text-sm leading-relaxed text-muted">
                       {job.bullets.map((b, j) => (
                         <li key={j} className="flex gap-2">
-                          <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-border" />
-                          {b}
+                          <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-muted" />
+                          <span>{b}</span>
                         </li>
                       ))}
                     </ul>
