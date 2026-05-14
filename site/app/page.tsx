@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { MdEmail, MdInsertDriveFile } from "react-icons/md";
 import { basePath } from "@/lib/config";
 
 /* ── Data ────────────────────────────────────── */
@@ -112,18 +114,28 @@ const LEADERSHIP = [
 ];
 
 const CONTACT_LINKS = [
-  { label: "Email", value: "san82@cornell.edu", href: "mailto:san82@cornell.edu" },
+  {
+    label: "Email",
+    value: "san82@cornell.edu",
+    href: "mailto:san82@cornell.edu",
+    icon: MdEmail,
+  },
   {
     label: "LinkedIn",
-    value: "linkedin.com/in/skainzeuton",
+    value: "/in/skainzeuton",
     href: "https://linkedin.com/in/skainzeuton",
+    icon: FaLinkedin,
   },
   {
     label: "GitHub",
     value: "github.com/skai-n",
     href: "https://github.com/skai-n",
+    icon: FaGithub,
   },
-];
+] as const;
+
+const RESUME_FILE = "Skai Nzeuton Resume.pdf";
+const contactIconClass = "h-5 w-5 shrink-0 text-foreground";
 
 /* ── Page ────────────────────────────────────── */
 
@@ -180,11 +192,11 @@ export default function Home() {
               Skai Nzeuton
             </h1>
             <div className="max-w-md text-base leading-relaxed text-muted space-y-4">
-              <p>Hey, I'm Skai! 🤙 </p>
+              <p>Hey, I&apos;m Skai! 🤙 </p>
 
               <p>
                 As a junior studying computer science and entrepreneurship at Cornell
-                University, I'm passionate about using technology and innovation to solve
+                University, I&apos;m passionate about using technology and innovation to solve
                 complex issues!
               </p>
 
@@ -193,7 +205,7 @@ export default function Home() {
                 computing, and social entrepreneurship. To further these interests, I
                 started my own nonprofit called Food for All NYC, joined the National
                 Society of Black Engineers, the Cornell Data Science project team, and serve
-                as a mentor for LinkedIn's ASCEND program.
+                as a mentor for LinkedIn&apos;s ASCEND program.
               </p>
 
               <p>
@@ -339,21 +351,30 @@ export default function Home() {
               Feel free to contact me at san82 [at] cornell [dot] edu!
             </p>
 
-            <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
+            <div className="grid gap-4 lg:grid-cols-4 lg:gap-3">
               {CONTACT_LINKS.map((c, i) => (
                 <a
                   key={i}
                   href={c.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="contact-link flex items-center gap-3 rounded-lg border border-border px-5 py-3 text-sm text-muted"
+                  aria-label={c.label}
+                  className="contact-link flex min-w-0 items-center gap-3 overflow-hidden rounded-lg border border-border px-5 py-4 text-sm text-muted"
                 >
-                  <span className="font-medium text-foreground">
-                    {c.label}
-                  </span>
-                  <span className="text-xs">{c.value}</span>
+                  <c.icon className={contactIconClass} aria-hidden="true" />
+                  <span className="min-w-0 truncate text-sm">{c.value}</span>
                 </a>
               ))}
+
+              <a
+                href={`${basePath}/${encodeURIComponent(RESUME_FILE)}`}
+                download={RESUME_FILE}
+                aria-label="Resume"
+                className="contact-link flex min-w-0 items-center gap-3 overflow-hidden rounded-lg border border-border px-5 py-4 text-sm text-muted"
+              >
+                <MdInsertDriveFile className={contactIconClass} aria-hidden="true" />
+                <span className="min-w-0 truncate text-sm">Resume</span>
+              </a>
             </div>
           </div>
         </section>
