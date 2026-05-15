@@ -3,7 +3,12 @@
 import Image from "next/image";
 import { useState, type ReactNode } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
-import { MdEmail, MdInsertDriveFile } from "react-icons/md";
+import {
+  MdChevronLeft,
+  MdChevronRight,
+  MdEmail,
+  MdInsertDriveFile,
+} from "react-icons/md";
 import { basePath } from "@/lib/config";
 
 /* ── Data ────────────────────────────────────── */
@@ -40,7 +45,7 @@ function ExperienceBullets({
     <ul className={`flex flex-col gap-1.5 leading-relaxed text-muted ${className}`}>
       {bullets.map((b, j) => (
         <li key={j} className="flex gap-2">
-          <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-muted" />
+          <span className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-muted" />
           <span>{b}</span>
         </li>
       ))}
@@ -95,9 +100,17 @@ function ExperienceCard({
 function ExperienceModal({
   job,
   onClose,
+  onPrevious,
+  onNext,
+  currentIndex,
+  total,
 }: {
   job: ExperienceItem;
   onClose: () => void;
+  onPrevious: () => void;
+  onNext: () => void;
+  currentIndex: number;
+  total: number;
 }) {
   const hasDetails = job.bullets.length > 0 || job.details;
 
@@ -122,11 +135,29 @@ function ExperienceModal({
           ×
         </button>
 
+        <button
+          type="button"
+          onClick={onPrevious}
+          aria-label="Previous experience"
+          className="contact-link absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-surface text-muted"
+        >
+          <MdChevronLeft className="h-5 w-5" aria-hidden="true" />
+        </button>
+
+        <button
+          type="button"
+          onClick={onNext}
+          aria-label="Next experience"
+          className="contact-link absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-surface text-muted"
+        >
+          <MdChevronRight className="h-5 w-5" aria-hidden="true" />
+        </button>
+
         <div
           className={
             hasDetails
-              ? "grid gap-6 pr-10 md:grid-cols-[220px_1fr] md:gap-0 md:pr-0"
-              : "flex justify-center pr-10 md:pr-0"
+              ? "grid gap-6 px-12 md:grid-cols-[220px_1fr] md:gap-0"
+              : "flex justify-center px-12"
           }
         >
           <div className="flex min-h-64 flex-col items-center justify-center gap-4 text-center md:pr-6">
@@ -168,6 +199,10 @@ function ExperienceModal({
             </div>
           )}
         </div>
+
+        <p className="mt-5 text-center text-xs font-medium text-muted">
+          {currentIndex + 1} / {total}
+        </p>
       </div>
     </div>
   );
@@ -180,7 +215,7 @@ const EXPERIENCE: ExperienceItem[] = [
     period: "Aug 2026 – Nov 2026",
     team: "Google Core SignalService",
     logo: "/logos/google.jpeg",
-    details: "Coming soon...",
+    details: "Coming soon in Fall 2026...",
     bullets: [],
   },
   {
@@ -189,7 +224,7 @@ const EXPERIENCE: ExperienceItem[] = [
     period: "May 2026 – Aug 2026",
     team: "Suppliers",
     logo: "/logos/meta.jpeg",
-    details: "Coming soon...",
+    details: "Coming soon in Summer 2026...",
     bullets: [],
   },
   {
@@ -345,8 +380,23 @@ const heroContactIconClass = "h-4 w-4 text-foreground";
 /* ── Page ────────────────────────────────────── */
 
 export default function Home() {
-  const [selectedExperience, setSelectedExperience] =
-    useState<ExperienceItem | null>(null);
+  const [selectedExperienceIndex, setSelectedExperienceIndex] =
+    useState<number | null>(null);
+
+  const selectedExperience =
+    selectedExperienceIndex === null ? null : EXPERIENCE[selectedExperienceIndex];
+
+  const showPreviousExperience = () => {
+    setSelectedExperienceIndex((current) =>
+      current === null ? current : (current - 1 + EXPERIENCE.length) % EXPERIENCE.length
+    );
+  };
+
+  const showNextExperience = () => {
+    setSelectedExperienceIndex((current) =>
+      current === null ? current : (current + 1) % EXPERIENCE.length
+    );
+  };
 
   return (
     <div className="flex flex-col flex-1 bg-background font-sans">
@@ -464,21 +514,21 @@ export default function Home() {
 
             <div className="flex flex-col gap-4">
               <div className="mx-auto flex w-full flex-col gap-4 sm:w-auto sm:flex-row">
-                {EXPERIENCE.slice(0, 2).map((job) => (
+                {EXPERIENCE.slice(0, 2).map((job, index) => (
                   <ExperienceCard
                     key={`${job.company}-${job.period}`}
                     job={job}
-                    onSelect={() => setSelectedExperience(job)}
+                    onSelect={() => setSelectedExperienceIndex(index)}
                   />
                 ))}
               </div>
 
               <div className="mx-auto flex w-full flex-col gap-4 sm:w-auto sm:flex-row">
-                {EXPERIENCE.slice(2).map((job) => (
+                {EXPERIENCE.slice(2).map((job, index) => (
                   <ExperienceCard
                     key={`${job.company}-${job.period}`}
                     job={job}
-                    onSelect={() => setSelectedExperience(job)}
+                    onSelect={() => setSelectedExperienceIndex(index + 2)}
                   />
                 ))}
               </div>
@@ -607,7 +657,11 @@ export default function Home() {
       {selectedExperience && (
         <ExperienceModal
           job={selectedExperience}
-          onClose={() => setSelectedExperience(null)}
+          onClose={() => setSelectedExperienceIndex(null)}
+          onPrevious={showPreviousExperience}
+          onNext={showNextExperience}
+          currentIndex={selectedExperienceIndex ?? 0}
+          total={EXPERIENCE.length}
         />
       )}
     </div>
