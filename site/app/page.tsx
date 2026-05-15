@@ -1,5 +1,7 @@
+"use client";
+
 import Image from "next/image";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { MdEmail, MdInsertDriveFile } from "react-icons/md";
 import { basePath } from "@/lib/config";
@@ -17,7 +19,9 @@ type ExperienceItem = {
   role: string;
   company: string;
   period: string;
+  team: string;
   logo: string;
+  details?: ReactNode;
   bullets: ReactNode[];
 };
 
@@ -25,29 +29,174 @@ function Emphasis({ children }: { children: ReactNode }) {
   return <strong className="resume-emphasis">{children}</strong>;
 }
 
+function ExperienceBullets({
+  bullets,
+  className = "text-sm",
+}: {
+  bullets: ReactNode[];
+  className?: string;
+}) {
+  return (
+    <ul className={`flex flex-col gap-1.5 leading-relaxed text-muted ${className}`}>
+      {bullets.map((b, j) => (
+        <li key={j} className="flex gap-2">
+          <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-muted" />
+          <span>{b}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function ExperienceCard({
+  job,
+  onSelect,
+}: {
+  job: ExperienceItem;
+  onSelect: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      className="card experience-card flex min-h-64 w-full cursor-pointer flex-col items-center justify-between gap-4 rounded-lg border border-border bg-surface p-4 text-center sm:w-60"
+    >
+      <div className="flex flex-col items-center gap-4">
+        <div className="flex h-27 w-27 shrink-0 items-center justify-center rounded-md border border-border bg-surface p-1 text-xs text-muted">
+          <Image
+            src={`${basePath}${job.logo}`}
+            alt={`${job.company} logo`}
+            width={76}
+            height={76}
+            className="h-full w-full object-contain"
+          />
+        </div>
+
+        <div className="min-w-0">
+          <h3 className="text-base font-semibold leading-snug text-foreground">
+            {job.role}
+          </h3>
+          <p className="mt-2 text-sm text-muted">
+            {job.period}
+          </p>
+          <p className="mt-2 text-sm text-muted">
+            {job.team}
+          </p>
+        </div>
+      </div>
+
+      <span className="text-xs font-medium text-accent">
+        View Details
+      </span>
+    </button>
+  );
+}
+
+function ExperienceModal({
+  job,
+  onClose,
+}: {
+  job: ExperienceItem;
+  onClose: () => void;
+}) {
+  const hasDetails = job.bullets.length > 0 || job.details;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/35 px-6 py-8 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="experience-modal-title"
+      onClick={onClose}
+    >
+      <div
+        className="relative max-h-full w-full max-w-3xl overflow-auto rounded-lg border border-border bg-surface p-6 shadow-xl"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close experience details"
+          className="contact-link absolute right-4 top-4 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-xl leading-none text-muted"
+        >
+          ×
+        </button>
+
+        <div
+          className={
+            hasDetails
+              ? "grid gap-6 pr-10 md:grid-cols-[220px_1fr] md:gap-0 md:pr-0"
+              : "flex justify-center pr-10 md:pr-0"
+          }
+        >
+          <div className="flex min-h-64 flex-col items-center justify-center gap-4 text-center md:pr-6">
+            <div className="flex h-24 w-24 shrink-0 items-center justify-center p-1">
+              <Image
+                src={`${basePath}${job.logo}`}
+                alt={`${job.company} logo`}
+                width={92}
+                height={92}
+                className="h-full w-full object-contain"
+              />
+            </div>
+
+            <div className="min-w-0">
+              <p className="mb-2 text-sm font-medium text-muted">
+                {job.company}
+              </p>
+              <h3 id="experience-modal-title" className="text-base font-semibold leading-snug text-foreground">
+                {job.role}
+              </h3>
+              <p className="mt-2 text-sm text-muted">
+                {job.period}
+              </p>
+              <p className="mt-2 text-sm text-muted">
+                {job.team}
+              </p>
+            </div>
+          </div>
+
+          {hasDetails && (
+            <div className="flex items-center md:border-l md:border-border md:pl-6">
+              {job.bullets.length > 0 ? (
+                <ExperienceBullets bullets={job.bullets} className="text-base" />
+              ) : (
+                <p className="text-base leading-relaxed text-muted">
+                  {job.details}
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const EXPERIENCE: ExperienceItem[] = [
   {
     role: "Software Engineer Intern",
     company: "Google",
     period: "Aug 2026 – Nov 2026",
+    team: "Google Core SignalService",
     logo: "/logos/google.jpeg",
-    bullets: [
-      "Google Core SignalService",
-    ],
+    details: "Coming soon...",
+    bullets: [],
   },
   {
     role: "Software Engineer Intern",
     company: "Meta",
     period: "May 2026 – Aug 2026",
+    team: "Suppliers",
     logo: "/logos/meta.jpeg",
-    bullets: [
-      "Suppliers",
-    ],
+    details: "Coming soon...",
+    bullets: [],
   },
   {
     role: "Software Engineer Intern",
     company: "Microsoft",
     period: "May 2025 – Aug 2025",
+    team: "Azure Storage XScenarios",
     logo: "/logos/microsoft.jpeg",
     bullets: [
       <>
@@ -69,6 +218,7 @@ const EXPERIENCE: ExperienceItem[] = [
     role: "ASCEND Intern",
     company: "LinkedIn",
     period: "Sep 2024 – May 2025",
+    team: "ASCEND",
     logo: "/logos/linkedin.jpeg",
     bullets: [
       <>
@@ -89,6 +239,7 @@ const EXPERIENCE: ExperienceItem[] = [
     role: "Explore Intern",
     company: "Microsoft",
     period: "May 2024 – Aug 2024",
+    team: "Azure Storage XScenarios",
     logo: "/logos/microsoft.jpeg",
     bullets: [
       <>
@@ -134,7 +285,7 @@ const LEADERSHIP: LeadershipItem[] = [
   {
     role: "Vice President",
     org: "Cornell Data Science Project Team",
-    period: "May 2025 – Present",
+    period: "May 2025 – May 2026",
     description: (
       <>
         Leading Cornell&apos;s largest data science club, spanning <Emphasis>9 projects</Emphasis> across{" "}
@@ -194,6 +345,9 @@ const heroContactIconClass = "h-4 w-4 text-foreground";
 /* ── Page ────────────────────────────────────── */
 
 export default function Home() {
+  const [selectedExperience, setSelectedExperience] =
+    useState<ExperienceItem | null>(null);
+
   return (
     <div className="flex flex-col flex-1 bg-background font-sans">
       {/* ─── Navbar ─────────────────────────── */}
@@ -308,53 +462,26 @@ export default function Home() {
               Work Experience
             </h2>
 
-            <div className="flex flex-col gap-10">
-              {EXPERIENCE.map((job, i) => (
-                <div key={i} className="flex gap-4 sm:gap-6">
+            <div className="flex flex-col gap-4">
+              <div className="mx-auto flex w-full flex-col gap-4 sm:w-auto sm:flex-row">
+                {EXPERIENCE.slice(0, 2).map((job) => (
+                  <ExperienceCard
+                    key={`${job.company}-${job.period}`}
+                    job={job}
+                    onSelect={() => setSelectedExperience(job)}
+                  />
+                ))}
+              </div>
 
-                  {/* ── Logo  ── */}
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md border border-border bg-surface text-xs text-muted">
-                    {
-                      <Image
-                        src={`${basePath}${job.logo}`}
-                        alt={`${job.company} logo`}
-                        width={48}
-                        height={48}
-                        className="object-contain"
-                      />
-                    }
-                  </div>
-
-                  {/* ── Content ── */}
-                  <div className="flex flex-col gap-2 w-full">
-
-                    {/* Top Row */}
-                    <div className="flex items-start justify-between gap-4">
-                      <h3 className="text-base font-semibold text-foreground">
-                        {job.role}{" "}
-                        <span className="font-normal text-muted">
-                          · {job.company}
-                        </span>
-                      </h3>
-
-                      <span className="shrink-0 text-sm text-muted">
-                        {job.period}
-                      </span>
-                    </div>
-
-                    {/* Bullets */}
-                    <ul className="flex flex-col gap-1.5 text-sm leading-relaxed text-muted">
-                      {job.bullets.map((b, j) => (
-                        <li key={j} className="flex gap-2">
-                          <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-muted" />
-                          <span>{b}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                  </div>
-                </div>
-              ))}
+              <div className="mx-auto flex w-full flex-col gap-4 sm:w-auto sm:flex-row">
+                {EXPERIENCE.slice(2).map((job) => (
+                  <ExperienceCard
+                    key={`${job.company}-${job.period}`}
+                    job={job}
+                    onSelect={() => setSelectedExperience(job)}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -433,7 +560,7 @@ export default function Home() {
               Get in Touch
             </h2>
             <p className="mb-10 max-w-md text-sm leading-relaxed text-muted">
-              Feel free to contact me at san82 [at] cornell [dot] edu!
+              Feel free to <Emphasis>contact me</Emphasis> at <Emphasis>san82 [at] cornell [dot] edu</Emphasis>!
             </p>
 
             <div className="grid gap-4 lg:grid-cols-4 lg:gap-3">
@@ -476,6 +603,13 @@ export default function Home() {
           </span>
         </div>
       </footer>
+
+      {selectedExperience && (
+        <ExperienceModal
+          job={selectedExperience}
+          onClose={() => setSelectedExperience(null)}
+        />
+      )}
     </div>
   );
 }
