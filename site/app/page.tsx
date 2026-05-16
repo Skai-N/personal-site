@@ -300,6 +300,7 @@ type ProjectItem = {
   tech: string;
   description: string;
   link: string;
+  embedUrl?: string;
   github?: string;
   bullets?: ReactNode[];
 };
@@ -361,7 +362,7 @@ function ProjectModal({
           ×
         </button>
 
-        <div className="grid gap-6 pr-10 md:grid-cols-[240px_1fr] md:gap-0 md:pr-0">
+        <div className="grid gap-6 pr-10 md:grid-cols-[360px_1fr] md:gap-0 md:pr-0">
           <div className="flex min-h-64 flex-col justify-center gap-4 md:pr-6">
             <div>
               <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted">
@@ -406,23 +407,24 @@ function ProjectModal({
               </p>
             </div>
 
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="contact-link inline-flex w-fit items-center gap-1 text-sm font-medium text-accent underline decoration-border underline-offset-4 hover:decoration-foreground"
-            >
-              <span>Open Project</span>
-              <MdOpenInNew className="h-4 w-4" aria-hidden="true" />
-            </a>
           </div>
 
-          <div className="flex min-h-64 items-center md:border-l md:border-border md:pl-6">
+          <div className="flex min-h-64 flex-col justify-center gap-5 md:border-l md:border-border md:pl-6">
+            {project.embedUrl && (
+              <iframe
+                src={project.embedUrl}
+                title={`${project.title} embedded preview`}
+                className="aspect-video w-full rounded-lg border border-border bg-section-alt"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            )}
+
             {project.bullets && project.bullets.length > 0 ? (
               <ExperienceBullets bullets={project.bullets} className="text-base" />
             ) : (
               <p className="text-base leading-relaxed text-muted">
-                Add project bullet details here.
+                Project details coming soon.
               </p>
             )}
           </div>
@@ -438,6 +440,7 @@ const PROJECTS: ProjectItem[] = [
     tech: "C++, TCP Networking, Distributed Systems",
     description: "C++ implementation of essential Git commands, featuring a distributed remote server replicated via the Primary-Backup model.",
     link: "https://youtu.be/qhKPWgMNqMY",
+    embedUrl: "https://www.youtube.com/embed/qhKPWgMNqMY",
     github: "https://github.com/CornellDataScience/gitdistributed",
     bullets: [
       <>
@@ -462,6 +465,7 @@ const PROJECTS: ProjectItem[] = [
     tech: "Python, ONNX, Machine Learning",
     description: "Python ONNX implementation of symmetric and asymmetric post-training static and dynamic quantization techniques.",
     link: "https://docs.google.com/presentation/d/1gnHAot5ASr7be5nIqDEKw6tbAFfQTv1nIGAL4Oloe24/edit?usp=sharing",
+    embedUrl: "https://docs.google.com/presentation/d/1gnHAot5ASr7be5nIqDEKw6tbAFfQTv1nIGAL4Oloe24/embed?start=false&loop=false&delayms=3000",
     github: "https://github.com/CornellDataScience/quantization-on-edge",
     bullets: [
       <>
