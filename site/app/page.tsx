@@ -124,7 +124,7 @@ function ExperienceModal({
       onClick={onClose}
     >
       <div
-        className="relative max-h-full w-full max-w-3xl overflow-auto rounded-lg border border-border bg-surface p-6 shadow-xl"
+        className="relative max-h-full w-full max-w-5xl overflow-auto rounded-lg border border-border bg-surface p-6 shadow-xl"
         onClick={(event) => event.stopPropagation()}
       >
         <button
@@ -295,18 +295,188 @@ const EXPERIENCE: ExperienceItem[] = [
   },
 ];
 
-const PROJECTS = [
+type ProjectItem = {
+  title: string;
+  tech: string;
+  description: string;
+  link: string;
+  github?: string;
+  bullets?: ReactNode[];
+};
+
+function ProjectCard({
+  project,
+  onSelect,
+}: {
+  project: ProjectItem;
+  onSelect: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      className="card flex flex-col gap-3 rounded-xl border border-border bg-surface p-6 text-left"
+    >
+      <h3 className="text-base font-semibold text-foreground">
+        {project.title}
+      </h3>
+      <p className="text-xs font-medium uppercase tracking-wider text-muted">
+        {project.tech}
+      </p>
+      <p className="text-sm leading-relaxed text-muted">
+        {project.description}
+      </p>
+      <span className="mt-auto pt-2 text-xs font-medium text-accent">
+        View Details →
+      </span>
+    </button>
+  );
+}
+
+function ProjectModal({
+  project,
+  onClose,
+}: {
+  project: ProjectItem;
+  onClose: () => void;
+}) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/35 px-6 py-8 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="project-modal-title"
+      onClick={onClose}
+    >
+      <div
+        className="relative max-h-full w-full max-w-5xl overflow-auto rounded-lg border border-border bg-surface p-6 shadow-xl"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close project details"
+          className="contact-link absolute right-4 top-4 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-xl leading-none text-muted"
+        >
+          ×
+        </button>
+
+        <div className="grid gap-6 pr-10 md:grid-cols-[240px_1fr] md:gap-0 md:pr-0">
+          <div className="flex min-h-64 flex-col justify-center gap-4 md:pr-6">
+            <div>
+              <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted">
+                Project
+              </p>
+              <div className="flex items-center gap-2">
+                <h3
+                  id="project-modal-title"
+                  className="text-xl font-semibold leading-tight text-foreground"
+                >
+                  {project.title}
+                </h3>
+                {project.github && (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${project.title} GitHub repository`}
+                    className="contact-link flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border text-muted"
+                  >
+                    <FaGithub className="h-4 w-4" aria-hidden="true" />
+                  </a>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted">
+                Skills
+              </p>
+              <p className="text-sm leading-relaxed text-muted">
+                {project.tech}
+              </p>
+            </div>
+
+            <div>
+              <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted">
+                Overview
+              </p>
+              <p className="text-sm leading-relaxed text-muted">
+                {project.description}
+              </p>
+            </div>
+
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="contact-link inline-flex w-fit items-center gap-1 text-sm font-medium text-accent underline decoration-border underline-offset-4 hover:decoration-foreground"
+            >
+              <span>Open Project</span>
+              <MdOpenInNew className="h-4 w-4" aria-hidden="true" />
+            </a>
+          </div>
+
+          <div className="flex min-h-64 items-center md:border-l md:border-border md:pl-6">
+            {project.bullets && project.bullets.length > 0 ? (
+              <ExperienceBullets bullets={project.bullets} className="text-base" />
+            ) : (
+              <p className="text-base leading-relaxed text-muted">
+                Add project bullet details here.
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const PROJECTS: ProjectItem[] = [
   {
     title: "GitDistributed",
     tech: "C++, TCP Networking, Distributed Systems",
     description: "C++ implementation of essential Git commands, featuring a distributed remote server replicated via the Primary-Backup model.",
     link: "https://youtu.be/qhKPWgMNqMY",
+    github: "https://github.com/CornellDataScience/gitdistributed",
+    bullets: [
+      <>
+        Led team of <Emphasis>8</Emphasis> to build a <Emphasis>distributed</Emphasis> version control service in{" "}
+        <Emphasis>C++</Emphasis>, supporting the <Emphasis>5</Emphasis> most common <Emphasis>Git</Emphasis> commands
+      </>,
+      <>
+        Replicated the remote Git repository using the <Emphasis>Primary-Backup</Emphasis> model, <Emphasis>tolerating 50%</Emphasis> of server failures
+      </>,
+      <>
+        Implemented <Emphasis>TCP/IP</Emphasis> networking via sockets and multithreading, allowing <Emphasis>concurrent</Emphasis>{" "}
+        connections to <Emphasis>3+</Emphasis> other <Emphasis>servers</Emphasis>
+      </>,
+      <>
+        Developed <Emphasis>serialization</Emphasis> schemes over <Emphasis>6</Emphasis> message <Emphasis>types</Emphasis>,{" "}
+        using <Emphasis>multithreaded</Emphasis> timers for <Emphasis>realtime</Emphasis> server health <Emphasis>monitoring</Emphasis>
+      </>,
+    ],
   },
   {
     title: "Quantization on Edge",
     tech: "Python, ONNX, Machine Learning",
     description: "Python ONNX implementation of symmetric and asymmetric post-training static and dynamic quantization techniques.",
     link: "https://docs.google.com/presentation/d/1gnHAot5ASr7be5nIqDEKw6tbAFfQTv1nIGAL4Oloe24/edit?usp=sharing",
+    github: "https://github.com/CornellDataScience/quantization-on-edge",
+    bullets: [
+      <>
+        Led <Emphasis>6</Emphasis> teammates to quantize <Emphasis>CNN</Emphasis> model in <Emphasis>Python</Emphasis>{" "}
+        and benchmark results when deployed to <Emphasis>NVIDIA Jetson Nano</Emphasis> device
+      </>,
+      <>
+        Implemented dynamic and static post-training quantization, <Emphasis>reducing</Emphasis> model{" "}
+        <Emphasis>size 4x</Emphasis> while retaining <Emphasis>98% accuracy</Emphasis>
+      </>,
+      <>
+        Developed model compiler pass in <Emphasis>ONNX</Emphasis> to utilize custom fused operators,{" "}
+        <Emphasis>speeding up</Emphasis> inference by over <Emphasis>50%</Emphasis>
+      </>,
+    ],
   },
 ];
 
@@ -534,9 +704,13 @@ const heroContactIconClass = "h-4 w-4 text-foreground";
 export default function Home() {
   const [selectedExperienceIndex, setSelectedExperienceIndex] =
     useState<number | null>(null);
+  const [selectedProjectIndex, setSelectedProjectIndex] =
+    useState<number | null>(null);
 
   const selectedExperience =
     selectedExperienceIndex === null ? null : EXPERIENCE[selectedExperienceIndex];
+  const selectedProject =
+    selectedProjectIndex === null ? null : PROJECTS[selectedProjectIndex];
 
   const showPreviousExperience = () => {
     setSelectedExperienceIndex((current) =>
@@ -698,26 +872,11 @@ export default function Home() {
 
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
               {PROJECTS.map((project, i) => (
-                <a
-                  key={i}
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="card flex flex-col gap-3 rounded-xl border border-border bg-surface p-6"
-                >
-                  <h3 className="text-base font-semibold text-foreground">
-                    {project.title}
-                  </h3>
-                  <p className="text-xs font-medium uppercase tracking-wider text-muted">
-                    {project.tech}
-                  </p>
-                  <p className="text-sm leading-relaxed text-muted">
-                    {project.description}
-                  </p>
-                  <span className="mt-auto pt-2 text-xs font-medium text-accent">
-                    View Project →
-                  </span>
-                </a>
+                <ProjectCard
+                  key={project.title}
+                  project={project}
+                  onSelect={() => setSelectedProjectIndex(i)}
+                />
               ))}
             </div>
           </div>
@@ -835,6 +994,13 @@ export default function Home() {
           onNext={showNextExperience}
           currentIndex={selectedExperienceIndex ?? 0}
           total={EXPERIENCE.length}
+        />
+      )}
+
+      {selectedProject && (
+        <ProjectModal
+          project={selectedProject}
+          onClose={() => setSelectedProjectIndex(null)}
         />
       )}
     </div>
