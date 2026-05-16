@@ -7,6 +7,7 @@ import {
   MdChevronLeft,
   MdChevronRight,
   MdEmail,
+  MdOpenInNew,
   MdInsertDriveFile,
 } from "react-icons/md";
 import { basePath } from "@/lib/config";
@@ -312,6 +313,7 @@ const PROJECTS = [
 type LeadershipItem = {
   role: string;
   org: string;
+  href?: string;
   period: string;
   description: ReactNode;
 };
@@ -320,10 +322,11 @@ const LEADERSHIP: LeadershipItem[] = [
   {
     role: "Vice President",
     org: "Cornell Data Science Project Team",
+    href: "https://cornelldata.science",
     period: "May 2025 – May 2026",
     description: (
       <>
-        Leading Cornell&apos;s largest data science club, spanning <Emphasis>9 projects</Emphasis> across{" "}
+        Led Cornell&apos;s largest student-run data science organization, spanning <Emphasis>14 projects</Emphasis> across{" "}
         <Emphasis>60+ club members</Emphasis> and <Emphasis>2 corporate sponsorships</Emphasis>
       </>
     ),
@@ -331,6 +334,7 @@ const LEADERSHIP: LeadershipItem[] = [
   {
     role: "Academic Excellence Chair",
     org: "National Society of Black Engineers",
+    href: "https://nsbe.org",
     period: "May 2024 – May 2025",
     description: (
       <>
@@ -342,6 +346,7 @@ const LEADERSHIP: LeadershipItem[] = [
   {
     role: "Founder",
     org: "Food for All NYC",
+    href: "https://foodforallnyc.org",
     period: "Jun 2022 – May 2024",
     description: (
       <>
@@ -588,9 +593,24 @@ export default function Home() {
                   <div className="flex flex-col gap-2">
                     <h3 className="text-base font-semibold text-foreground">
                       {item.role}{" "}
-                      <span className="font-normal text-muted">
-                        · {item.org}
-                      </span>
+                      {item.href ? (
+                        <span className="font-normal text-muted">
+                          ·{" "}
+                          <a
+                            href={item.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="contact-link inline-flex items-center gap-1 underline decoration-border underline-offset-4 hover:decoration-foreground"
+                          >
+                            <span>{item.org}</span>
+                            <MdOpenInNew className="h-3.5 w-3.5" aria-hidden="true" />
+                          </a>
+                        </span>
+                      ) : (
+                        <span className="font-normal text-muted">
+                          · {item.org}
+                        </span>
+                      )}
                     </h3>
                     <p className="text-sm leading-relaxed text-muted">
                       {item.description}
