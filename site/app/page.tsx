@@ -316,7 +316,117 @@ type LeadershipItem = {
   href?: string;
   period: string;
   description: ReactNode;
+  links?: LeadershipLink[];
 };
+
+type LeadershipLink = {
+  title: string;
+  href: string;
+  source?: string;
+  kind?: "Article" | "Video" | "Feature" | "Interview";
+  image?: string;
+};
+
+function LeadershipLinkCarousel({ links }: { links: LeadershipLink[] }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const currentLink = links[currentIndex];
+  const hasMultipleLinks = links.length > 1;
+  const visibleLinks = hasMultipleLinks
+    ? [-1, 0, 1].map((offset) => ({
+        link: links[(currentIndex + offset + links.length) % links.length],
+        offset,
+      }))
+    : [{ link: currentLink, offset: 0 }];
+
+  const showPreviousLink = () => {
+    setCurrentIndex((current) => (current - 1 + links.length) % links.length);
+  };
+
+  const showNextLink = () => {
+    setCurrentIndex((current) => (current + 1) % links.length);
+  };
+
+  if (!currentLink) {
+    return null;
+  }
+
+  return (
+    <div className="mt-4 w-full">
+      <div className="flex items-center gap-3">
+        {hasMultipleLinks && (
+          <button
+            type="button"
+            onClick={showPreviousLink}
+            aria-label="Previous leadership link"
+            className="contact-link flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border text-muted"
+          >
+            <MdChevronLeft className="h-5 w-5" aria-hidden="true" />
+          </button>
+        )}
+
+        <div className="grid min-w-0 flex-1 gap-4 sm:grid-cols-3">
+          {visibleLinks.map(({ link, offset }) => (
+            <a
+              key={`${link.href}-${offset}`}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`contact-link group flex min-w-0 flex-col gap-3 rounded-lg border border-border bg-surface p-3 ${
+                offset === 0 ? "" : "hidden sm:flex"
+              }`}
+            >
+              {link.image && (
+                <Image
+                  src={`${basePath}${link.image}`}
+                  alt=""
+                  width={320}
+                  height={180}
+                  className="aspect-video w-full rounded-md object-cover"
+                />
+              )}
+
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  {link.kind && (
+                    <p className="mb-1 text-xs font-medium text-accent">
+                      {link.kind}
+                    </p>
+                  )}
+                  <h4 className="line-clamp-2 text-sm font-semibold leading-snug text-foreground underline decoration-border underline-offset-4 group-hover:decoration-foreground">
+                    {link.title}
+                  </h4>
+                  {link.source && (
+                    <p className="mt-2 truncate text-xs text-muted">
+                      {link.source}
+                    </p>
+                  )}
+                </div>
+                <MdOpenInNew className="mt-0.5 h-4 w-4 shrink-0 text-muted group-hover:text-foreground" aria-hidden="true" />
+              </div>
+            </a>
+          ))}
+        </div>
+
+        {hasMultipleLinks && (
+          <button
+            type="button"
+            onClick={showNextLink}
+            aria-label="Next leadership link"
+            className="contact-link flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border text-muted"
+          >
+            <MdChevronRight className="h-5 w-5" aria-hidden="true" />
+          </button>
+        )}
+      </div>
+
+      {hasMultipleLinks && (
+        <div className="mt-3 text-center text-xs text-muted">
+          {currentIndex + 1} / {links.length}
+        </div>
+      )}
+    </div>
+  );
+}
 
 const LEADERSHIP: LeadershipItem[] = [
   {
@@ -354,6 +464,43 @@ const LEADERSHIP: LeadershipItem[] = [
         <Emphasis>~20,000 pounds of food</Emphasis> across <Emphasis>2,000+ schools</Emphasis>
       </>
     ),
+    links: [
+      {
+        title: "Meet Skai and Will",
+        href: "https://www.grassrootsgrocery.org/blog/meet-skai-and-will-food-rescue-movement-makers",
+        source: "Grassroots Grocery",
+        kind: "Article",
+        image: "/thumbnails/grassroots_thumbnail.jpeg",
+      },
+      {
+        title: "High School Student Collects Excess Cafeteria Food to Fight Hunger",
+        href: "https://www.thedrewbarrymoreshow.com/videos/drew-and-brandon-marshall-meet-a-high-school-student-who-collects-excess-cafeteria-food-to",
+        source: "The Drew Barrymore Show",
+        kind: "Feature",
+        image: "/thumbnails/drew_thumbnail.jpeg",
+      },
+      {
+        title: "Students Team Up With Nonprofit to Help Fight Hunger",
+        href: "https://www.youtube.com/watch?v=rQukdK8V6ng",
+        source: "CBS New York",
+        kind: "Video",
+        image: "/thumbnails/cbs_thumbnail.jpeg",
+      },
+      {
+        title: "Stuyvesant Teens Fight Hunger as Grocery Prices Rise",
+        href: "https://www.nbcnewyork.com/news/local/stuyvesant-teens-fight-hunger-as-grocery-prices-rise/4062911/",
+        source: "NBC New York",
+        kind: "Article",
+        image: "/thumbnails/nbc_thumbnail.jpeg",
+      },
+      {
+        title: "The Stuyvesant Food Security Club",
+        href: "https://simple-acts-big-impact.castos.com/episodes/the-stuyvesant-food-security-club",
+        source: "Simple Acts Big Impact",
+        kind: "Interview",
+        image: "/thumbnails/simpleacts_thumbnail.jpeg",
+      },
+    ],
   },
 ];
 
@@ -586,36 +733,42 @@ export default function Home() {
 
             <div className="flex flex-col gap-10">
               {LEADERSHIP.map((item, i) => (
-                <div key={i} className="flex flex-col gap-1 sm:flex-row sm:gap-12">
-                  <div className="mb-1 min-w-[180px] text-sm text-muted sm:mb-0 sm:pt-0.5">
-                    {item.period}
+                <div key={i} className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-1 sm:flex-row sm:gap-12">
+                    <div className="mb-1 min-w-[180px] text-sm text-muted sm:mb-0 sm:pt-0.5">
+                      {item.period}
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <h3 className="text-base font-semibold text-foreground">
+                        {item.role}{" "}
+                        {item.href ? (
+                          <span className="font-normal text-muted">
+                            ·{" "}
+                            <a
+                              href={item.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="contact-link inline-flex items-center gap-1 underline decoration-border underline-offset-4 hover:decoration-foreground"
+                            >
+                              <span>{item.org}</span>
+                              <MdOpenInNew className="h-3.5 w-3.5" aria-hidden="true" />
+                            </a>
+                          </span>
+                        ) : (
+                          <span className="font-normal text-muted">
+                            · {item.org}
+                          </span>
+                        )}
+                      </h3>
+                      <p className="text-sm leading-relaxed text-muted">
+                        {item.description}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <h3 className="text-base font-semibold text-foreground">
-                      {item.role}{" "}
-                      {item.href ? (
-                        <span className="font-normal text-muted">
-                          ·{" "}
-                          <a
-                            href={item.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="contact-link inline-flex items-center gap-1 underline decoration-border underline-offset-4 hover:decoration-foreground"
-                          >
-                            <span>{item.org}</span>
-                            <MdOpenInNew className="h-3.5 w-3.5" aria-hidden="true" />
-                          </a>
-                        </span>
-                      ) : (
-                        <span className="font-normal text-muted">
-                          · {item.org}
-                        </span>
-                      )}
-                    </h3>
-                    <p className="text-sm leading-relaxed text-muted">
-                      {item.description}
-                    </p>
-                  </div>
+
+                  {item.links && item.links.length > 0 && (
+                    <LeadershipLinkCarousel links={item.links} />
+                  )}
                 </div>
               ))}
             </div>
