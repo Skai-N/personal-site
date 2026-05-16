@@ -214,7 +214,7 @@ const EXPERIENCE: ExperienceItem[] = [
     role: "Software Engineer Intern",
     company: "Google",
     period: "Aug 2026 – Nov 2026",
-    team: "Google Core SignalService",
+    team: "Google Core",
     logo: "/logos/google.jpeg",
     details: "Coming soon in Fall 2026...",
     bullets: [],
@@ -232,7 +232,7 @@ const EXPERIENCE: ExperienceItem[] = [
     role: "Software Engineer Intern",
     company: "Microsoft",
     period: "May 2025 – Aug 2025",
-    team: "Azure Storage XScenarios",
+    team: "Azure Storage",
     logo: "/logos/microsoft.jpeg",
     bullets: [
       <>
@@ -275,7 +275,7 @@ const EXPERIENCE: ExperienceItem[] = [
     role: "Explore Intern",
     company: "Microsoft",
     period: "May 2024 – Aug 2024",
-    team: "Azure Storage XScenarios",
+    team: "Azure Storage",
     logo: "/logos/microsoft.jpeg",
     bullets: [
       <>
